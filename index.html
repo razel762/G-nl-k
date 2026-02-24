@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deniz'e Özel Günlük</title>
+    <title>Deniz'e Özel</title>
     <style>
-        :root { --pembe-bg: #ffdae0; --koyu-pembe: #ff85a2; }
-        body, html { margin: 0; padding: 0; height: 100%; background-color: var(--pembe-bg); font-family: 'Georgia', serif; display: flex; justify-content: center; align-items: center; overflow: hidden; perspective: 2000px; }
+        :root { --p-bg: #ffdae0; --p-dark: #ff85a2; }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--p-bg); font-family: 'Georgia', serif; display: flex; justify-content: center; align-items: center; overflow: hidden; perspective: 2000px; }
         .book { position: relative; width: 340px; height: 520px; transform-style: preserve-3d; }
         .page { 
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
@@ -15,16 +15,20 @@
             border-left: 5px solid rgba(0,0,0,0.05); 
             display: flex; flex-direction: column; align-items: center; text-align: center; 
             transform-origin: left center; 
-            transition: transform 1.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
             backface-visibility: hidden; z-index: 1; 
         }
         #cover { background: #d81b60; color: white; justify-content: center; z-index: 10; border-left: 6px solid #ad1457; }
         .page.flipped { transform: rotateY(-175deg); z-index: 0; }
         .active-page { z-index: 5; }
-        .photo { width: 100%; max-height: 280px; object-fit: cover; border-radius: 8px; margin-top: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #f9f9f9; }
+        .photo { 
+            width: 100%; height: 280px; 
+            object-fit: cover; border-radius: 8px; margin-top: auto; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #eee;
+        }
         h1 { font-size: 1.4rem; line-height: 1.5; margin: 0; }
-        p { font-style: italic; color: #444; line-height: 1.5; font-size: 0.95rem; margin-top: 5px; }
-        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--koyu-pembe); color: white; border: none; border-radius: 50%; width: 65px; height: 65px; font-size: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); outline: none; }
+        p { font-style: italic; color: #444; line-height: 1.5; font-size: 1rem; margin-top: 5px; }
+        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--p-dark); color: white; border: none; border-radius: 50%; width: 65px; height: 65px; font-size: 30px; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
@@ -32,18 +36,16 @@
     
     <div class="book">
         <div class="page" id="p4">
-            <p>"Senin en güzel yanın karakterin, sabrın ve o içten gülüşün gerçekten fark yaratıyor..."</p>
-            <img src="f3.jpg" class="photo" alt="Deniz 3">
-        </div>
-
-        <div class="page" id="p3">
-            <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun, bu günler geçecek..."</p>
-            <img src="f2.jpg" class="photo" alt="Deniz 2">
-        </div>
+            <p>"Senin en güzel yanın karakterin, sabrın ve o içten gülüşün..."</p>
+            <img src="f3.jpg" class="photo"> </div>
 
         <div class="page" id="p2">
-            <p>"Yaşadıkların seni eksiltmedi, aksine seni daha da özel yaptı. Ben hep yanındayım..."</p>
-            <img src="f1.jpg" class="photo" alt="Deniz 1">
+            <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun..."</p>
+            <img src="f2.jpg" class="photo"> </div>
+
+        <div class="page" id="p1">
+            <p>"Yaşadıkların seni eksiltmedi, aksine seni daha da özel yaptı..."</p>
+            <img src="https://i.ibb.co/nM3Q6pCp/20260224-093617.jpg" class="photo">
         </div>
 
         <div class="page active-page" id="cover">
@@ -58,21 +60,17 @@
     <script>
         let curr = 1;
         const total = 4;
-        const pIds = ["cover", "p2", "p3", "p4"];
+        const pIds = ["cover", "p1", "p2", "p4"]; // Sıralamayı düzelttim
         
         function turnPage() {
             if (curr < total) {
-                const sound = document.getElementById('pageSound');
-                sound.currentTime = 0;
-                sound.play().catch(() => {});
-
-                const cp = document.getElementById(pIds[curr-1]);
-                cp.classList.add('flipped');
-                cp.classList.remove('active-page');
+                const s = document.getElementById('pageSound');
+                s.currentTime = 0; s.play().catch(() => {});
+                document.getElementById(pIds[curr-1]).classList.add('flipped');
+                document.getElementById(pIds[curr-1]).classList.remove('active-page');
                 curr++;
                 document.getElementById(pIds[curr-1]).classList.add('active-page');
             } else {
-                // Başa dön
                 pIds.forEach(id => document.getElementById(id).classList.remove('flipped'));
                 document.getElementById('cover').classList.add('active-page');
                 curr = 1;
