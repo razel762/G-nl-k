@@ -9,9 +9,10 @@
         
         body, html { 
             margin: 0; padding: 0; height: 100%; 
-            /* Arka plan güllü pembe tema */
-            background-color: var(--p-bg);
+            /* Arka plan: Güllü pembe tema */
+            background-color: #ffdae0;
             background-image: url('https://www.transparenttextures.com/patterns/rose-petals.png'); 
+            background-attachment: fixed;
             font-family: 'Georgia', serif; 
             display: flex; justify-content: center; align-items: center; 
             overflow: hidden; perspective: 2000px; 
@@ -21,8 +22,8 @@
         
         .page { 
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
-            background: white; padding: 25px; box-sizing: border-box; 
-            border-radius: 5px 15px 15px 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            background: #fffcfc; padding: 25px; box-sizing: border-box; 
+            border-radius: 5px 15px 15px 5px; box-shadow: 5px 10px 30px rgba(0,0,0,0.15); 
             border-left: 5px solid rgba(0,0,0,0.05); 
             display: flex; flex-direction: column; align-items: center; text-align: center; 
             transform-origin: left center; 
@@ -30,7 +31,12 @@
             backface-visibility: hidden; z-index: 1; 
         }
 
-        #cover { background: var(--p-dark); color: white; justify-content: center; z-index: 10; border-left: 6px solid #ad1457; }
+        #cover { 
+            background: linear-gradient(135deg, #d81b60 0%, #ad1457 100%); 
+            color: white; justify-content: center; z-index: 10; 
+            border-left: 6px solid #880e4f; 
+        }
+
         .page.flipped { transform: rotateY(-175deg); z-index: 0; }
         .active-page { z-index: 5; }
 
@@ -39,15 +45,22 @@
             object-fit: cover; border-radius: 8px; margin-top: auto; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             image-rendering: -webkit-optimize-contrast;
-            filter: contrast(1.05) brightness(1.02);
+            filter: contrast(1.05) brightness(1.03);
         }
 
-        h1 { font-size: 1.4rem; line-height: 1.5; margin: 0; }
+        h1 { font-size: 1.3rem; line-height: 1.5; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
         h2 { color: var(--p-dark); font-size: 1.2rem; margin-bottom: 10px; }
         p { font-style: italic; color: #444; line-height: 1.5; font-size: 1rem; margin-top: 5px; }
         
-        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--btn); color: white; border: none; border-radius: 50%; width: 65px; height: 65px; font-size: 35px; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); outline: none; transition: 0.3s; }
-        #nextBtn:hover { transform: scale(1.1); background: var(--p-dark); }
+        #nextBtn { 
+            position: fixed; bottom: 30px; right: 30px; 
+            background: var(--p-dark); color: white; border: none; 
+            border-radius: 50%; width: 65px; height: 65px; font-size: 35px; 
+            cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.4); 
+            outline: none; transition: 0.3s; 
+        }
+        #nextBtn:hover { transform: scale(1.1); background: #ff4081; }
+        #nextBtn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -78,7 +91,7 @@
         <div class="page active-page" id="cover">
             <h1>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h1>
             <div style="font-size: 50px; margin-top: 20px;">📖</div>
-            <p style="color:white; margin-top: 20px;">Açmak için butona bas</p>
+            <p style="color:white; margin-top: 20px;">(Açmak için butona bas)</p>
         </div>
     </div>
 
@@ -90,8 +103,8 @@
         const pIds = ["cover", "p2", "p3", "p4", "p5"];
         
         function turnPage() {
+            const s = document.getElementById('pageSound');
             if (curr < total) {
-                const s = document.getElementById('pageSound');
                 s.currentTime = 0; s.play().catch(() => {});
                 document.getElementById(pIds[curr-1]).classList.add('flipped');
                 document.getElementById(pIds[curr-1]).classList.remove('active-page');
