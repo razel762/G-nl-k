@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deniz'e Özel Günlük</title>
     <style>
-        :root { --p-bg: #ffdae0; --p-dark: #ff85a2; }
+        :root { --p-bg: #ffdae0; --p-dark: #d81b60; --btn: #ff85a2; }
         body, html { margin: 0; padding: 0; height: 100%; background: var(--p-bg); font-family: 'Georgia', serif; display: flex; justify-content: center; align-items: center; overflow: hidden; perspective: 2000px; }
+        
         .book { position: relative; width: 340px; height: 550px; transform-style: preserve-3d; }
+        
         .page { 
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
             background: white; padding: 25px; box-sizing: border-box; 
@@ -18,18 +20,27 @@
             transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1);
             backface-visibility: hidden; z-index: 1; 
         }
-        #cover { background: #d81b60; color: white; justify-content: center; z-index: 10; border-left: 6px solid #ad1457; }
+
+        #cover { background: var(--p-dark); color: white; justify-content: center; z-index: 10; border-left: 6px solid #ad1457; }
         .page.flipped { transform: rotateY(-175deg); z-index: 0; }
         .active-page { z-index: 5; }
+
         .photo { 
             width: 100%; height: 280px; 
             object-fit: cover; border-radius: 8px; margin-top: auto; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #eee;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            /* Netleştirme ayarları */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            filter: contrast(1.05) brightness(1.02);
         }
+
         h1 { font-size: 1.4rem; line-height: 1.5; margin: 0; }
-        h2 { color: #d81b60; font-size: 1.2rem; margin-bottom: 10px; }
+        h2 { color: var(--p-dark); font-size: 1.2rem; margin-bottom: 10px; }
         p { font-style: italic; color: #444; line-height: 1.5; font-size: 1rem; margin-top: 5px; }
-        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--p-dark); color: white; border: none; border-radius: 50%; width: 65px; height: 65px; font-size: 35px; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); outline: none; }
+        
+        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--btn); color: white; border: none; border-radius: 50%; width: 65px; height: 65px; font-size: 35px; cursor: pointer; z-index: 1000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); outline: none; transition: 0.3s; }
+        #nextBtn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -39,7 +50,7 @@
         <div class="page" id="p5">
             <h2>BU GÜLLER SENİN İÇİN</h2>
             <img src="https://i.ibb.co/PZ1QZD5K/yeri-muaaa.jpg" class="photo">
-            <p style="margin-top: 20px; font-weight: bold; font-style: normal;">Her zaman yanındayız.</p>
+            <p style="margin-top: 20px; font-weight: bold; font-style: normal;">Her zaman yanındayım.</p>
         </div>
 
         <div class="page" id="p4">
@@ -68,7 +79,7 @@
 
     <script>
         let curr = 1;
-        const total = 5; // Kapak + 4 Sayfa
+        const total = 5;
         const pIds = ["cover", "p2", "p3", "p4", "p5"];
         
         function turnPage() {
