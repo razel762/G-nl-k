@@ -22,11 +22,13 @@
             display: none; flex-direction: column;
             justify-content: flex-start; align-items: center; text-align: center;
             box-sizing: border-box;
+            z-index: 1;
         }
 
         .active { 
             display: flex; 
-            animation: flipPage 0.8s ease-in-out forwards; 
+            animation: flipPage 0.8s ease-in-out forwards;
+            z-index: 10;
         }
 
         @keyframes flipPage {
@@ -37,9 +39,10 @@
         .photo {
             width: 100%; max-height: 45vh;
             object-fit: contain; border-radius: 10px;
-            margin-top: auto; /* Yazı üstte, foto altta kalsın diye */
+            margin-top: auto;
             margin-bottom: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #f9f9f9; /* Fotoğraf yüklenmezse boş kalmasın */
         }
 
         h2 { color: #d81b60; font-size: 1.1rem; line-height: 1.4; margin-bottom: 10px; }
@@ -51,7 +54,7 @@
             border-radius: 50%; width: 60px; height: 60px;
             font-size: 24px; cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 100;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -62,23 +65,23 @@
     <div class="page active" id="p1">
         <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
         <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin ve içimi ısıtan gülüşün kalacak."</p>
-        <img src="foto1.jpg" class="photo">
+        <img src="foto1.jpg" class="photo" alt="Fotoğraf 1">
     </div>
 
     <div class="page" id="p2">
         <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
-        <img src="foto2.jpg" class="photo">
+        <img src="foto2.jpg" class="photo" alt="Fotoğraf 2">
     </div>
 
     <div class="page" id="p3">
         <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
-        <img src="foto3.jpg" class="photo">
+        <img src="foto3.jpg" class="photo" alt="Fotoğraf 3">
     </div>
 
     <div class="page" id="p4">
         <h2>BU GÜLLER DENİZ İÇİN</h2>
-        <div style="font-size: 100px; margin-top: 40px;">🌹🌹🌹</div>
-        <p style="margin-top: 40px; font-weight: bold; font-style: normal;">Her zaman yanındayız.</p>
+        <img src="yeri muaaa.jpeg" class="photo" style="max-height: 40vh;" alt="Çiçekli Kedi">
+        <p style="margin-top: 20px; font-weight: bold; font-style: normal;">Her zaman yanındayız.</p>
     </div>
 
     <button id="nextBtn">➔</button>
@@ -89,16 +92,21 @@
         const btn = document.getElementById('nextBtn');
         const sound = document.getElementById('pageSound');
 
-        btn.addEventListener('click', () => {
+        // Sayfa geçiş fonksiyonu
+        function changePage() {
             sound.currentTime = 0;
-            sound.play().catch(() => {});
+            sound.play().catch(e => console.log("Ses çalma hatası:", e));
 
-            document.getElementById(`p${current}`).classList.remove('active');
+            const currentEl = document.getElementById(`p${current}`);
+            currentEl.classList.remove('active');
+            
             current = (current % total) + 1;
-            setTimeout(() => {
-                document.getElementById(`p${current}`).classList.add('active');
-            }, 50);
-        });
+            
+            const nextEl = document.getElementById(`p${current}`);
+            nextEl.classList.add('active');
+        }
+
+        btn.addEventListener('click', changePage);
     </script>
 </body>
 </html>
