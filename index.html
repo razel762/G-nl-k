@@ -7,53 +7,54 @@
     <style>
         body, html {
             margin: 0; padding: 0; height: 100%;
-            background-color: #ffdae0;
+            background-color: #ffdae0; /* Pembe Arka Plan */
             font-family: 'Georgia', serif;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden; perspective: 1500px;
+        }
+
+        .diary-wrapper {
+            position: relative;
+            width: 90%; max-width: 400px; height: 80vh;
         }
 
         .page {
             position: absolute;
-            width: 85%; max-width: 400px; height: 85vh;
-            background: white; padding: 25px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: white; padding: 20px;
             border-radius: 15px; border-left: 8px solid #f8bbd0;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            display: none; /* JS ile açılacak */
-            flex-direction: column;
-            justify-content: flex-start; align-items: center; text-align: center;
             box-sizing: border-box;
-            z-index: 1;
+            display: flex; flex-direction: column;
+            justify-content: flex-start; align-items: center; text-align: center;
+            
+            /* Sayfaları üst üste bindir ve gizle */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        /* Sayfanın görünmesi için zorlayıcı class */
-        .active { 
-            display: flex !important; 
-            animation: flipPage 0.8s ease-in-out forwards;
+        /* Aktif olan sayfa görünsün */
+        .page.active { 
+            opacity: 1;
+            visibility: visible;
             z-index: 10;
         }
 
-        @keyframes flipPage {
-            0% { transform: rotateY(-90deg); opacity: 0; }
-            100% { transform: rotateY(0deg); opacity: 1; }
-        }
-
         .photo {
-            width: 100%; max-height: 45vh;
+            width: 100%; max-height: 40vh;
             object-fit: contain; border-radius: 10px;
-            margin-top: auto;
-            margin-bottom: 10px;
-            background-color: #fff0f3;
+            margin-top: auto; margin-bottom: 10px;
+            background: #fff5f7;
         }
 
-        h2 { color: #d81b60; font-size: 1.1rem; line-height: 1.4; margin-bottom: 10px; }
-        p { font-style: italic; color: #444; line-height: 1.5; font-size: 0.95rem; margin-bottom: 10px; }
+        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 10px; }
+        p { font-style: italic; color: #444; line-height: 1.5; font-size: 0.95rem; }
 
         #nextBtn {
             position: fixed; bottom: 30px; right: 30px;
             background: #ff85a2; color: white; border: none;
-            border-radius: 50%; width: 60px; height: 60px;
-            font-size: 24px; cursor: pointer;
+            border-radius: 50%; width: 65px; height: 65px;
+            font-size: 30px; cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 1000;
         }
@@ -63,41 +64,46 @@
 
     <audio id="pageSound" src="https://www.soundjay.com/misc/sounds/page-flip-01a.mp3" preload="auto"></audio>
 
-    <div class="page active" id="p1">
-        <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
-        <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin ve içimi ısıtan gülüşün kalacak."</p>
-        <img src="foto1.jpg" class="photo" alt="Anı 1">
+    <div class="diary-wrapper">
+        <div class="page active" id="p1">
+            <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
+            <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin ve içimi ısıtan gülüşün kalacak."</p>
+            <img src="foto1.jpg" class="photo" alt="Fotoğraf 1">
+        </div>
+
+        <div class="page" id="p2">
+            <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
+            <img src="foto2.jpg" class="photo" alt="Fotoğraf 2">
+        </div>
+
+        <div class="page" id="p3">
+            <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
+            <img src="foto3.jpg" class="photo" alt="Fotoğraf 3">
+        </div>
     </div>
 
-    <div class="page" id="p2">
-        <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
-        <img src="foto2.jpg" class="photo" alt="Anı 2">
-    </div>
-
-    <div class="page" id="p3">
-        <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
-        <img src="foto3.jpg" class="photo" alt="Anı 3">
-    </div>
-
-    <button id="nextBtn">➔</button>
+    <button id="nextBtn" onclick="nextPage()">➔</button>
 
     <script>
         let current = 1;
         const total = 3;
-        const btn = document.getElementById('nextBtn');
         const sound = document.getElementById('pageSound');
 
-        btn.addEventListener('click', () => {
+        function nextPage() {
+            // Sesi çalmayı dene
             sound.currentTime = 0;
             sound.play().catch(() => {});
 
-            document.getElementById(`p${current}`).classList.remove('active');
-            current = (current % total) + 1;
+            // Mevcut sayfayı gizle
+            document.getElementById('p' + current).classList.remove('active');
             
-            setTimeout(() => {
-                document.getElementById(`p${current}`).classList.add('active');
-            }, 50);
-        });
+            // Sayfa numarasını artır
+            current++;
+            if (current > total) current = 1;
+
+            // Yeni sayfayı göster
+            document.getElementById('p' + current).classList.add('active');
+        }
     </script>
 </body>
 </html>
