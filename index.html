@@ -3,107 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deniz'e Özel</title>
+    <title>Deniz'e Özel Günlük</title>
     <style>
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background-color: #ffdae0; /* Pembe Arka Plan */
-            font-family: 'Georgia', serif;
-            display: flex; justify-content: center; align-items: center;
+        :root {
+            --pembe-bg: #ffdae0;
+            --koyu-pembe: #ff85a2;
         }
 
-        .diary-wrapper {
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background-color: var(--pembe-bg);
+            font-family: 'Georgia', serif;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden;
+            perspective: 2000px; /* 3D Derinlik hissi */
+        }
+
+        .book {
             position: relative;
-            width: 90%; max-width: 400px; height: 80vh;
+            width: 350px;
+            height: 500px;
+            transition: transform 0.5s;
         }
 
         .page {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: white; padding: 20px;
-            border-radius: 15px; border-left: 8px solid #f8bbd0;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            background: white;
+            padding: 30px;
             box-sizing: border-box;
-            display: flex; flex-direction: column;
-            justify-content: flex-start; align-items: center; text-align: center;
+            border-radius: 5px 15px 15px 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-left: 2px solid rgba(0,0,0,0.05);
             
-            /* Sayfaları üst üste bindir ve gizle */
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            
+            /* Sayfa çevirme noktası (sol kenar) */
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), z-index 0.8s;
+            backface-visibility: hidden;
+            z-index: 1;
         }
 
-        /* Aktif olan sayfa görünsün */
-        .page.active { 
-            opacity: 1;
-            visibility: visible;
-            z-index: 10;
+        /* Çevrilmiş Sayfa Durumu */
+        .page.flipped {
+            transform: rotateY(-180deg);
+            z-index: 0;
+        }
+
+        .active-page {
+            z-index: 2;
         }
 
         .photo {
-            width: 100%; max-height: 40vh;
-            object-fit: contain; border-radius: 10px;
-            margin-top: auto; margin-bottom: 10px;
-            background: #fff5f7;
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 10px; }
-        p { font-style: italic; color: #444; line-height: 1.5; font-size: 0.95rem; }
+        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 15px; }
+        p { font-style: italic; color: #444; line-height: 1.6; font-size: 0.95rem; }
 
         #nextBtn {
             position: fixed; bottom: 30px; right: 30px;
-            background: #ff85a2; color: white; border: none;
+            background: var(--koyu-pembe); color: white; border: none;
             border-radius: 50%; width: 65px; height: 65px;
             font-size: 30px; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
             z-index: 1000;
+            transition: 0.3s;
         }
+        #nextBtn:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
 
     <audio id="pageSound" src="https://www.soundjay.com/misc/sounds/page-flip-01a.mp3" preload="auto"></audio>
 
-    <div class="diary-wrapper">
-        <div class="page active" id="p1">
-            <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
-            <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin ve içimi ısıtan gülüşün kalacak."</p>
-            <img src="foto1.jpg" class="photo" alt="Fotoğraf 1">
+    <div class="book">
+        <div class="page" id="p3">
+            <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
+            <img src="foto3.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
         </div>
 
         <div class="page" id="p2">
             <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
-            <img src="foto2.jpg" class="photo" alt="Fotoğraf 2">
+            <img src="foto2.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
         </div>
 
-        <div class="page" id="p3">
-            <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
-            <img src="foto3.jpg" class="photo" alt="Fotoğraf 3">
+        <div class="page active-page" id="p1">
+            <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
+            <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin kalacak."</p>
+            <img src="foto1.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
         </div>
     </div>
 
-    <button id="nextBtn" onclick="nextPage()">➔</button>
+    <button id="nextBtn">➔</button>
 
     <script>
         let current = 1;
         const total = 3;
         const sound = document.getElementById('pageSound');
 
-        function nextPage() {
-            // Sesi çalmayı dene
-            sound.currentTime = 0;
-            sound.play().catch(() => {});
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (current <= total) {
+                // Sesi çal
+                sound.currentTime = 0;
+                sound.play().catch(() => {});
 
-            // Mevcut sayfayı gizle
-            document.getElementById('p' + current).classList.remove('active');
-            
-            // Sayfa numarasını artır
-            current++;
-            if (current > total) current = 1;
+                // Mevcut sayfayı çevir
+                const currentPage = document.getElementById(`p${current}`);
+                currentPage.classList.add('flipped');
+                currentPage.classList.remove('active-page');
 
-            // Yeni sayfayı göster
-            document.getElementById('p' + current).classList.add('active');
-        }
+                current++;
+
+                // Eğer son sayfaya gelindiyse başa dön (isteğe bağlı)
+                if (current > total) {
+                    setTimeout(() => {
+                        for (let i = 1; i <= total; i++) {
+                            document.getElementById(`p${i}`).classList.remove('flipped');
+                        }
+                        document.getElementById('p1').classList.add('active-page');
+                        current = 1;
+                    }, 1000);
+                } else {
+                    document.getElementById(`p${current}`).classList.add('active-page');
+                }
+            }
+        });
     </script>
 </body>
 </html>
