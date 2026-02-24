@@ -5,84 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deniz'e Özel Günlük</title>
     <style>
-        :root {
-            --pembe-bg: #ffdae0;
-            --koyu-pembe: #ff85a2;
+        :root { --pembe-bg: #ffdae0; --koyu-pembe: #ff85a2; }
+        body, html { margin: 0; padding: 0; height: 100%; background-color: var(--pembe-bg); font-family: 'Georgia', serif; display: flex; justify-content: center; align-items: center; overflow: hidden; perspective: 2000px; }
+        
+        .book { position: relative; width: 350px; height: 550px; transform-style: preserve-3d; }
+        
+        .page { 
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; 
+            background: white; padding: 30px; box-sizing: border-box; 
+            border-radius: 5px 15px 15px 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+            border-left: 4px solid rgba(0,0,0,0.1); 
+            display: flex; flex-direction: column; align-items: center; text-align: center; 
+            transform-origin: left center; 
+            transition: transform 1.8s cubic-bezier(0.645, 0.045, 0.355, 1); /* Daha da yavaşlattım */
+            backface-visibility: hidden; z-index: 1; 
         }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background-color: var(--pembe-bg);
-            font-family: 'Georgia', serif;
-            display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-            perspective: 2000px;
+        /* KAPAK ÖZEL STİLİ */
+        #cover { 
+            background: #d81b60; color: white; border-left: 5px solid #ad1457; 
+            justify-content: center; z-index: 10; 
         }
+        #cover h1 { font-size: 1.5rem; line-height: 1.6; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
 
-        .book {
-            position: relative;
-            width: 350px;
-            height: 550px;
-            transform-style: preserve-3d;
-        }
-
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            background: white;
-            padding: 30px;
-            box-sizing: border-box;
-            border-radius: 5px 15px 15px 5px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-left: 3px solid rgba(0,0,0,0.05);
-            
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            
-            /* Sayfa çevirme ayarları */
-            transform-origin: left center;
-            /* GEÇİŞ SÜRESİ: 1.5 saniye (Yavaş ve zarif) */
-            transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-            backface-visibility: hidden;
-            z-index: 1;
-        }
-
-        /* Çevrilen sayfa */
-        .page.flipped {
-            transform: rotateY(-170deg); /* Hafif açılı durması için */
-            z-index: 0;
-            pointer-events: none;
-        }
-
+        .page.flipped { transform: rotateY(-170deg); z-index: 0; pointer-events: none; }
         .active-page { z-index: 5; }
 
-        .photo {
-            width: 100%;
-            max-height: 280px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-top: auto;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            background: #fffafa;
-        }
+        .photo { width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-top: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: #fdfdfd; }
+        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 15px; }
+        p { font-style: italic; color: #444; line-height: 1.6; font-size: 1rem; }
 
-        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 15px; line-height: 1.4; }
-        p { font-style: italic; color: #444; line-height: 1.6; font-size: 0.95rem; margin-top: 0; }
-
-        #nextBtn {
-            position: fixed; bottom: 30px; right: 30px;
-            background: var(--koyu-pembe); color: white; border: none;
-            border-radius: 50%; width: 65px; height: 65px;
-            font-size: 30px; cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-            transition: 0.3s;
-        }
-        #nextBtn:hover { transform: scale(1.1); background: #ff7091; }
+        #nextBtn { position: fixed; bottom: 30px; right: 30px; background: var(--koyu-pembe); color: white; border: none; border-radius: 50%; width: 70px; height: 70px; font-size: 35px; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1000; }
     </style>
 </head>
 <body>
@@ -90,57 +43,58 @@
     <audio id="pageSound" src="https://www.soundjay.com/misc/sounds/page-flip-01a.mp3" preload="auto"></audio>
 
     <div class="book">
-        <div class="page" id="p3">
+        <div class="page" id="p4">
             <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
-            <img src="foto3.jpg" class="photo" alt="Anı 3">
+            <img src="20260224_094147.jpg" class="photo">
+        </div>
+
+        <div class="page" id="p3">
+            <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek..."</p>
+            <img src="20260224_093957.jpg" class="photo">
         </div>
 
         <div class="page" id="p2">
-            <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
-            <img src="foto2.jpg" class="photo" alt="Anı 2">
+            <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Hastalıklar bitecek geriye senin o güzel kalbin kalacak."</p>
+            <img src="20260224_093617.jpg" class="photo">
         </div>
 
-        <div class="page active-page" id="p1">
-            <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
-            <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin kalacak."</p>
-            <img src="foto1.jpg" class="photo" alt="Anı 1">
+        <div class="page active-page" id="cover">
+            <h1>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h1>
+            <div style="font-size: 50px; margin-top: 20px;">📖</div>
+            <p style="color: white; margin-top: 30px;">(Açmak için butona tıkla)</p>
         </div>
     </div>
 
-    <button id="nextBtn" title="Sonraki Sayfa">➔</button>
+    <button id="nextBtn">➔</button>
 
     <script>
         let current = 1;
-        const total = 3;
+        const total = 4; // Kapak dahil 4 sayfa
         const sound = document.getElementById('pageSound');
-        const btn = document.getElementById('nextBtn');
+        const pages = ["cover", "p2", "p3", "p4"];
 
-        btn.addEventListener('click', () => {
-            if (current <= total) {
-                // Sesi çal
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (current < total) {
                 sound.currentTime = 0;
                 sound.play().catch(() => {});
 
-                const currentPage = document.getElementById(`p${current}`);
+                const currentPageId = pages[current - 1];
+                const currentPage = document.getElementById(currentPageId);
                 
-                // Sayfayı çevir
                 currentPage.classList.add('flipped');
                 currentPage.classList.remove('active-page');
 
                 current++;
-
-                // Kitap bittiğinde başa dön
-                if (current > total) {
-                    setTimeout(() => {
-                        for (let i = 1; i <= total; i++) {
-                            document.getElementById(`p${i}`).classList.remove('flipped');
-                        }
-                        document.getElementById('p1').classList.add('active-page');
-                        current = 1;
-                    }, 2000); // Tüm sayfalar döndükten 2 sn sonra resetle
-                } else {
-                    document.getElementById(`p${current}`).classList.add('active-page');
-                }
+                
+                const nextPageId = pages[current - 1];
+                document.getElementById(nextPageId).classList.add('active-page');
+            } else {
+                // Son sayfada başa dönerken sayfaları geri kapat
+                setTimeout(() => {
+                    pages.forEach(id => document.getElementById(id).classList.remove('flipped'));
+                    document.getElementById('cover').classList.add('active-page');
+                    current = 1;
+                }, 500);
             }
         });
     </script>
