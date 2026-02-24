@@ -16,14 +16,14 @@
             font-family: 'Georgia', serif;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
-            perspective: 2000px; /* 3D Derinlik hissi */
+            perspective: 2000px;
         }
 
         .book {
             position: relative;
             width: 350px;
-            height: 500px;
-            transition: transform 0.5s;
+            height: 550px;
+            transform-style: preserve-3d;
         }
 
         .page {
@@ -36,41 +36,42 @@
             box-sizing: border-box;
             border-radius: 5px 15px 15px 5px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-left: 2px solid rgba(0,0,0,0.05);
+            border-left: 3px solid rgba(0,0,0,0.05);
             
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
             
-            /* Sayfa çevirme noktası (sol kenar) */
+            /* Sayfa çevirme ayarları */
             transform-origin: left center;
-            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), z-index 0.8s;
+            /* GEÇİŞ SÜRESİ: 1.5 saniye (Yavaş ve zarif) */
+            transition: transform 1.5s cubic-bezier(0.645, 0.045, 0.355, 1);
             backface-visibility: hidden;
             z-index: 1;
         }
 
-        /* Çevrilmiş Sayfa Durumu */
+        /* Çevrilen sayfa */
         .page.flipped {
-            transform: rotateY(-180deg);
+            transform: rotateY(-170deg); /* Hafif açılı durması için */
             z-index: 0;
+            pointer-events: none;
         }
 
-        .active-page {
-            z-index: 2;
-        }
+        .active-page { z-index: 5; }
 
         .photo {
             width: 100%;
-            max-height: 250px;
+            max-height: 280px;
             object-fit: cover;
             border-radius: 8px;
             margin-top: auto;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: #fffafa;
         }
 
-        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 15px; }
-        p { font-style: italic; color: #444; line-height: 1.6; font-size: 0.95rem; }
+        h2 { color: #d81b60; font-size: 1.1rem; margin-bottom: 15px; line-height: 1.4; }
+        p { font-style: italic; color: #444; line-height: 1.6; font-size: 0.95rem; margin-top: 0; }
 
         #nextBtn {
             position: fixed; bottom: 30px; right: 30px;
@@ -81,7 +82,7 @@
             z-index: 1000;
             transition: 0.3s;
         }
-        #nextBtn:active { transform: scale(0.9); }
+        #nextBtn:hover { transform: scale(1.1); background: #ff7091; }
     </style>
 </head>
 <body>
@@ -91,42 +92,44 @@
     <div class="book">
         <div class="page" id="p3">
             <p>"Senin en güzel yanın sadece görünüşün değil karakterin sabrın ve o içten gülüşün gerçekten fark yaratıyor insan seni tanıdıkça daha çok değer veriyor."</p>
-            <img src="foto3.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
+            <img src="foto3.jpg" class="photo" alt="Anı 3">
         </div>
 
         <div class="page" id="p2">
             <p>"Hayat seni yormaya çalışsa da sen ışığını kaybetmiyorsun belki bazen yoruluyorsun ama bil ki bu süreç sonsuz değil her şey yavaş yavaş düzelecek ve ben o güzel günlerde de yanında olmak istiyorum."</p>
-            <img src="foto2.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
+            <img src="foto2.jpg" class="photo" alt="Anı 2">
         </div>
 
         <div class="page active-page" id="p1">
             <h2>BU SİTE GÜZEL BİR HANIMEFENDİ İÇİN YAPILMIŞTIR</h2>
             <p>"Yaşadıkların seni eksiltmedi aksine seni daha da özel yaptı. Şu an zor bir dönemden geçiyor olabilirsin ama inan bana bu günler geçecek. Hastalıklar bitecek geriye senin o güzel kalbin kalacak."</p>
-            <img src="foto1.jpg" class="photo" onerror="this.src='https://via.placeholder.com/300x250?text=Fotoğraf+Bulunamadı'">
+            <img src="foto1.jpg" class="photo" alt="Anı 1">
         </div>
     </div>
 
-    <button id="nextBtn">➔</button>
+    <button id="nextBtn" title="Sonraki Sayfa">➔</button>
 
     <script>
         let current = 1;
         const total = 3;
         const sound = document.getElementById('pageSound');
+        const btn = document.getElementById('nextBtn');
 
-        document.getElementById('nextBtn').addEventListener('click', () => {
+        btn.addEventListener('click', () => {
             if (current <= total) {
                 // Sesi çal
                 sound.currentTime = 0;
                 sound.play().catch(() => {});
 
-                // Mevcut sayfayı çevir
                 const currentPage = document.getElementById(`p${current}`);
+                
+                // Sayfayı çevir
                 currentPage.classList.add('flipped');
                 currentPage.classList.remove('active-page');
 
                 current++;
 
-                // Eğer son sayfaya gelindiyse başa dön (isteğe bağlı)
+                // Kitap bittiğinde başa dön
                 if (current > total) {
                     setTimeout(() => {
                         for (let i = 1; i <= total; i++) {
@@ -134,7 +137,7 @@
                         }
                         document.getElementById('p1').classList.add('active-page');
                         current = 1;
-                    }, 1000);
+                    }, 2000); // Tüm sayfalar döndükten 2 sn sonra resetle
                 } else {
                     document.getElementById(`p${current}`).classList.add('active-page');
                 }
